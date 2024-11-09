@@ -21,7 +21,7 @@ public class FinishedBoard {
     board.updateTitle("§6§lWIZZARD");
 
     board.updateLines(
-        "§8#" + game.getId() + " ❙ " + new ConvertTime(System.currentTimeMillis()).getDateTimeFormattedBis(),
+        "§8#" + game.getId() + " ❙ " + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
         "§r",
         "  §f▪ &aPartie terminée !",
         "  §f▪ Kills: §b" + game.getGamePlayers().get(player.getUniqueId()).getKills(),
