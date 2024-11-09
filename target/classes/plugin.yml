@@ -1,0 +1,7 @@
+name: celest-wizzard
+author: Shall0wer
+version: 1.0
+main: fr.celestoria.wizzard.CelestWizzard
+depend:
+  - celest-api
+  - SimpleCloud-Plugin

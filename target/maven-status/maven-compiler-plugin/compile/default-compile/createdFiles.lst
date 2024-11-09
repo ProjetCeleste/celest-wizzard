@@ -1,0 +1,13 @@
+fr\celestoria\wizzard\countdowns\StartingCountdown.class
+fr\celestoria\wizzard\countdowns\EndCountdown.class
+fr\celestoria\wizzard\listeners\DefaultListeners.class
+fr\celestoria\wizzard\countdowns\PreStartingCountdown.class
+fr\celestoria\wizzard\CelestWizzard.class
+fr\celestoria\wizzard\game\LoopScheduler.class
+fr\celestoria\wizzard\boards\FinishedBoard.class
+fr\celestoria\wizzard\listeners\DefaultListeners$1.class
+fr\celestoria\wizzard\boards\StartingBoard.class
+fr\celestoria\wizzard\boards\WaitingBoard.class
+fr\celestoria\wizzard\listeners\InGameListeners.class
+fr\celestoria\wizzard\boards\GameBoard.class
+fr\celestoria\wizzard\game\WizzardGame.class
