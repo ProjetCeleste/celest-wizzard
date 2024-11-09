@@ -21,7 +21,7 @@ public class StartingBoard {
     board.updateTitle("§6§lWIZZARD");
 
     board.updateLines(
-        "§8#" + game.getId(),
+        "§8#" + game.getId() + " ❙ " + new ConvertTime(System.currentTimeMillis()).getDateTimeFormattedBis(),
         "§r",
         "  §f▪ Statut: §eEn attente",
         "  §f▪ Joueurs: §b" + game.countGamePlayers() + "§f/§a" + game.getMaxPlayers(),

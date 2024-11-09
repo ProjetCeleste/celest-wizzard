@@ -1,5 +1,6 @@
 package fr.celestoria.wizzard.boards;
 
+import fr.celestoria.api.utils.ConvertTime;
 import fr.celestoria.api.utils.board.FastBoard;
 import fr.celestoria.wizzard.CelestWizzard;
 import fr.celestoria.wizzard.game.WizzardGame;
@@ -20,7 +21,7 @@ public class FinishedBoard {
     board.updateTitle("§6§lWIZZARD");
 
     board.updateLines(
-        "§8#" + game.getId(),
+        "§8#" + game.getId() + " ❙ " + new ConvertTime(System.currentTimeMillis()).getDateTimeFormattedBis(),
         "§r",
         "  §f▪ &aPartie terminée !",
         "  §f▪ Kills: §b" + game.getGamePlayers().get(player.getUniqueId()).getKills(),

@@ -24,14 +24,15 @@ public class PreStartingCountdown extends AbstractCountdown {
         String message = Prefix.GAME_WIZZARD + "Lancement de la partie dans §a" + timer + " secondes§f.";
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
           onlinePlayer.sendMessage(message);
+        }
+      case 5:
+        CelestWizzard.getInstance().getGame().startingGame();
+      default:
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
           onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.ORB_PICKUP, 1f, 0.1f);
           new StartingBoard(onlinePlayer).updateBoard();
         }
         break;
-      case 5:
-        CelestWizzard.getInstance().getGame().startingGame();
-        break;
-      default:break;
     }
   }
 }

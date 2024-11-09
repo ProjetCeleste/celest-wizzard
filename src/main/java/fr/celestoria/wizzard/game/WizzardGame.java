@@ -8,6 +8,7 @@ import fr.celestoria.wizzard.CelestWizzard;
 import fr.celestoria.wizzard.countdowns.EndCountdown;
 import fr.celestoria.wizzard.countdowns.PreStartingCountdown;
 import fr.celestoria.wizzard.countdowns.StartingCountdown;
+import fr.celestoria.wizzard.listeners.InGameListeners;
 import org.bukkit.Bukkit;
 
 public class WizzardGame extends Game {
@@ -59,6 +60,8 @@ public class WizzardGame extends Game {
       setCurrentTask(new LoopScheduler());
       setGameTask(getCurrentTask().runTaskTimerAsynchronously(CelestWizzard.getInstance(), 0, 1));
       Bukkit.getPluginManager().callEvent(new StatusChangeEvent(Status.IN_GAME));
+      setCurrentListener(new InGameListeners());
+      Bukkit.getPluginManager().registerEvents(getCurrentListener(), CelestWizzard.getInstance());
     }
   }
 

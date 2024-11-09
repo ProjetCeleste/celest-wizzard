@@ -47,8 +47,8 @@ public class DefaultListeners implements Listener {
       case IN_GAME:
         for (UUID uuid : CelestWizzard.getInstance().getGame().getGamePlayers().keySet()) {
           Player player = Bukkit.getPlayer(uuid);
-          if (player != null) {
-            new GameBoard(player).updateBoard();
+          if (player == null) {
+            return;
           }
           PlayerUtils.cleanPlayer(player);
           player.getInventory().setItem(0, new ItemBuilder(Material.STICK).setName("§dBaguette magique"));

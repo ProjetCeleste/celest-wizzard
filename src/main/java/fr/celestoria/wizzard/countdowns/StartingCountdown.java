@@ -12,23 +12,22 @@ import org.bukkit.entity.Player;
 public class StartingCountdown extends AbstractCountdown {
 
   public StartingCountdown() {
-    super(26);
+    super(6);
   }
 
   @Override
   public void run() {
     timer--;
-    if (timer == 0) {
+    if (timer <= 0) {
       String rulesMessage = Prefix.GAME_WIZZARD
           + "Elimine tes adversaires avec un baton magique. Lorsque tu fais clic droit avec celui-là un sort est lancé tout droit !";
       for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
         onlinePlayer.sendMessage(rulesMessage);
         onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.ENDERDRAGON_GROWL, 1f, 0.1f);
-        new GameBoard(onlinePlayer).updateBoard();
       }
       CelestWizzard.getInstance().getGame().startGame();
     } else {
-      String defaultMessage = "Lancement de la partie dans §b" + timer + "§f seconde" + (timer == 1 ? "" : "s");
+      String defaultMessage = Prefix.GAME_WIZZARD + "Lancement de la partie dans §a" + timer + " seconde" + (timer == 1 ? "" : "s") + "§f.";
       for (Player players : Bukkit.getOnlinePlayers()) {
         players.sendMessage(defaultMessage);
         players.playSound(players.getLocation(), Sound.ORB_PICKUP, 1F, 0.1F);
