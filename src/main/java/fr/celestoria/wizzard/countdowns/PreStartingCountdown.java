@@ -26,14 +26,16 @@ public class PreStartingCountdown extends AbstractCountdown {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
           onlinePlayer.sendMessage(message);
         }
+        break;
       case 5:
         CelestWizzard.getInstance().getGame().startingGame();
-      default:
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-          onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.ORB_PICKUP, 1f, 0.1f);
-          new StartingBoard(onlinePlayer).updateBoard();
-        }
         break;
+      default:break;
+    }
+
+    for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+      onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.ORB_PICKUP, 1f, 0.1f);
+      new StartingBoard(onlinePlayer).updateBoard();
     }
   }
 }
