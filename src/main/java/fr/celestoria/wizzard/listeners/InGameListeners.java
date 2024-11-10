@@ -72,20 +72,19 @@ public class InGameListeners implements Listener {
             && !nearPlayers.isDead()
             && !hurtedPlayers.contains(nearPlayers.getUniqueId())) {
 
-          hurtedPlayers.add(nearPlayers.getUniqueId());
-
           if (nearPlayers.getInventory().getChestplate() != null) {
-            if (nearPlayers.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
+            if (nearPlayers.getInventory().getChestplate().getType().equals(Material.DIAMOND_CHESTPLATE)) {
               nearPlayers.getInventory().setChestplate(null);
-              nearPlayers.playSound(nearPlayers.getLocation(), Sound.ITEM_BREAK, 1.0f, 0.1f);
+              XSound.ITEM_SHIELD_BREAK.play(nearPlayers);
             }
           } else {
+            hurtedPlayers.add(nearPlayers.getUniqueId());
             doubleKill++;
             CelestWizzard.getInstance().getGame().updateScoreboard(player);
           }
           if (doubleKill == 2) {
             Bukkit.broadcastMessage(
-                "§e§lWOW ! §d" + player.getName() + " §evient de faire un §ddouble-kill §e!");
+                "§e§lWOW ! §d" + player.getName() + " §evient de faire un §d§l" + doubleKill + " kills §e!");
             player.getInventory().setChestplate(new ItemBuilder(Material.DIAMOND_CHESTPLATE));
             XSound.ENTITY_PLAYER_LEVELUP.play(player);
           }

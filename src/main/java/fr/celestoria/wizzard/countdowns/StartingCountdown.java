@@ -2,6 +2,7 @@ package fr.celestoria.wizzard.countdowns;
 
 import fr.celestoria.api.enums.Prefix;
 import fr.celestoria.api.gameapi.AbstractCountdown;
+import fr.celestoria.api.utils.xutils.XSound;
 import fr.celestoria.wizzard.CelestWizzard;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -22,7 +23,7 @@ public class StartingCountdown extends AbstractCountdown {
               + "Elimine tes adversaires avec un baton magique. Lorsque tu fais clic droit avec celui-là un sort est lancé tout droit !";
       for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
         onlinePlayer.sendMessage(rulesMessage);
-        onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.ENDERDRAGON_GROWL, 1f, 0.1f);
+        XSound.ENTITY_ENDER_DRAGON_GROWL.play(onlinePlayer);
       }
       CelestWizzard.getInstance().getGame().startGame();
     } else {
@@ -36,7 +37,7 @@ public class StartingCountdown extends AbstractCountdown {
               + "§f.";
       for (Player players : Bukkit.getOnlinePlayers()) {
         players.sendMessage(defaultMessage);
-        players.playSound(players.getLocation(), Sound.ORB_PICKUP, 1F, 0.1F);
+        XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(players);
       }
     }
   }

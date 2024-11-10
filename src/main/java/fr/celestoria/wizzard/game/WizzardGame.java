@@ -76,7 +76,9 @@ public class WizzardGame extends Game {
       ServerUtils.updateState(ServiceState.INVISIBLE);
       updateScoreboards();
       for (UUID uuid : getGamePlayers().keySet()) {
-        getScoreboard().getTeam("default").addPlayer(Bukkit.getPlayer(uuid));
+        Player player = Bukkit.getPlayer(uuid);
+        player.setScoreboard(getScoreboard());
+        getScoreboard().getTeam("default").addPlayer(player);
       }
     }
   }
