@@ -1,11 +1,19 @@
 package fr.celestoria.wizzard.listeners;
 
+import fr.celestoria.api.enums.Prefix;
+import fr.celestoria.api.utils.Cooldown;
 import fr.celestoria.api.utils.inv.ItemBuilder;
+import fr.celestoria.api.utils.xutils.XSound;
 import fr.celestoria.wizzard.CelestWizzard;
+import fr.celestoria.wizzard.game.WizzardGame;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,9 +35,10 @@ public class InGameListeners implements Listener {
   // STATIC FIELDS
   // ========================================================================
 
+  private static final Cooldown launchCooldown = new Cooldown(CelestWizzard.getInstance(), 500);
+
   private static final double SHOOT_STEP = 0.3D; // Précision de tir
-  private static final int SHOOT_MAX_CHECKS =
-      150; // Distance de tir = SHOOT_MAX_CHECKS * SHOOT_STEP
+  private static final int SHOOT_MAX_CHECKS = 150; // Distance de tir = SHOOT_MAX_CHECKS * SHOOT_STEP
   private static final double SHOOT_RADIUS = 3D; // Hitbox du tir
 
   // ========================================================================
@@ -37,70 +46,94 @@ public class InGameListeners implements Listener {
   // ========================================================================
 
   private void launchTrail(Player player) {
-    final Location loc = player.getEyeLocation().clone(); // On récupère la position des yeux
+    final Location loc = player.getEyeLocation().clone();
     final Vector dir =
-        loc.getDirection().normalize().multiply(SHOOT_STEP); // On récupère la direction
+        loc.getDirection().normalize().multiply(SHOOT_STEP);
     final Collection<? extends Player> onlinePlayers =
-        Bukkit.getServer().getOnlinePlayers(); // On récupère les entités du monde
+        Bukkit.getServer().getOnlinePlayers();
     Set<UUID> hurtedPlayers = new HashSet<>(0);
     Block lastBlock = null;
     int doubleKill = 0;
+
     for (int i = 0; i < SHOOT_MAX_CHECKS; i++) {
       loc.add(dir);
-      Block block = loc.getBlock(); // Opti: mieux vos des getBlock que getType
+      Block block = loc.getBlock();
       if (lastBlock == null || !lastBlock.equals(block)) {
-        if (block.getType() != Material.AIR) break;
+        if (block.getType() != Material.AIR) {
+          break;
+        }
         lastBlock = block;
       }
-      for (Player nearPlayers : onlinePlayers) // On vérifie qu'il y a une entité à côté
-      if (nearPlayers.getLocation().distanceSquared(loc) <= SHOOT_RADIUS
+      for (Player nearPlayers : onlinePlayers) {
+        if (nearPlayers.getLocation().distanceSquared(loc) <= SHOOT_RADIUS
             && nearPlayers != player
             && !nearPlayers.isDead()
-            && hurtedPlayers.add(nearPlayers.getUniqueId())) {
-          if (nearPlayers.getInventory().getChestplate()
-              != null) // Si il a une protection l'enlever
-          {
-            if (nearPlayers.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE)
+            && !hurtedPlayers.contains(nearPlayers.getUniqueId())) {
+
+          hurtedPlayers.add(nearPlayers.getUniqueId());
+
+          if (nearPlayers.getInventory().getChestplate() != null) {
+            if (nearPlayers.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
               nearPlayers.getInventory().setChestplate(null);
-          } else // Sinon get rekt noob
-          {
-            nearPlayers.damage(1337);
+              nearPlayers.playSound(nearPlayers.getLocation(), Sound.ITEM_BREAK, 1.0f, 0.1f);
+            }
+          } else {
             doubleKill++;
             CelestWizzard.getInstance().getGame().getGamePlayer(player).newKill();
             CelestWizzard.getInstance().getGame().updateScoreboard(player);
           }
-          if (doubleKill == 2) // Si il y a eu un doublekill
-          {
+          if (doubleKill == 2) {
             Bukkit.broadcastMessage(
                 "§e§lWOW ! §d" + player.getName() + " §evient de faire un §ddouble-kill §e!");
             player.getInventory().setChestplate(new ItemBuilder(Material.DIAMOND_CHESTPLATE));
+            XSound.ENTITY_PLAYER_LEVELUP.play(player);
           }
         }
-      if (i > 2) // Evite de faire pop une particule directement sur le tireur
-      player.getWorld().playEffect(loc, Effect.COLOURED_DUST, 5);
+      }
+
+      if (i > 2) {
+        player.getWorld().playEffect(loc, Effect.COLOURED_DUST, 5);
+      }
+    }
+
+    if (!hurtedPlayers.isEmpty()) {
+      for (UUID hurtedPlayer : hurtedPlayers) {
+        kill(hurtedPlayer, player);
+      }
     }
   }
 
-  @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
-  public boolean onPlayerInteract(PlayerInteractEvent event) {
+  private void kill(UUID victimUUID, Player killer) {
+    WizzardGame game = CelestWizzard.getInstance().getGame();
+    Player victim = Bukkit.getPlayer(victimUUID);
+    UUID killerUUID = killer.getUniqueId();
+
+    killer.sendMessage(Prefix.GAME_WIZZARD + "§7Vous avez tué " + victim.getName() + ".");
+    victim.sendMessage(Prefix.GAME_WIZZARD + "§7Vous avez été tué par " + killer.getName() + ".");
+
+    game.getGamePlayers().get(victimUUID).newDeath();
+    game.getGamePlayers().get(killerUUID).newKill();
+
+    victim.teleport(game.findSpawn());
+    XSound.ENTITY_VILLAGER_DEATH.play(victim);
+    XSound.ENTITY_ARROW_HIT_PLAYER.play(killer);
+
+    game.updateScoreboard(victim);
+    game.updateScoreboard(killer);
+  }
+
+  @EventHandler
+  public void onPlayerInteract(PlayerInteractEvent event) {
+    Player player = event.getPlayer();
     Action action = event.getAction();
-    if ((action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR)
-        && event.getMaterial() == Material.STICK) {
-      this.launchTrail(event.getPlayer());
-      return true;
-    }
-    return false;
-  }
 
-  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-  public boolean onFoodLevelChange(FoodLevelChangeEvent event) {
-    if (event.getEntity() instanceof Player) {
-      event.setCancelled(true);
-      Player player = (Player) event.getEntity();
-      player.setFoodLevel(20);
-      player.setSaturation(5);
-      return true;
+    if (action.name().startsWith("RIGHT_") && event.getMaterial().equals(Material.STICK)) {
+      if (launchCooldown.hasCooldown(player)) {
+        return;
+      }
+
+      launchCooldown.putInCooldown(player);
+      this.launchTrail(player);
     }
-    return false;
   }
 }

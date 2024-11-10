@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 public class PreStartingCountdown extends AbstractCountdown {
 
   public PreStartingCountdown() {
-    super(26);
+    super(31);
   }
 
   @Override
