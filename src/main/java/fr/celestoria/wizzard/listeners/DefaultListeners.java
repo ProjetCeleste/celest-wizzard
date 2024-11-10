@@ -1,16 +1,11 @@
 package fr.celestoria.wizzard.listeners;
 
-import com.sun.org.apache.bcel.internal.generic.SWITCH;
 import fr.celestoria.api.enums.Prefix;
 import fr.celestoria.api.gameapi.Status;
 import fr.celestoria.api.gameapi.StatusChangeEvent;
 import fr.celestoria.api.utils.PlayerUtils;
 import fr.celestoria.api.utils.inv.ItemBuilder;
 import fr.celestoria.wizzard.CelestWizzard;
-import fr.celestoria.wizzard.boards.FinishedBoard;
-import fr.celestoria.wizzard.boards.GameBoard;
-import fr.celestoria.wizzard.boards.StartingBoard;
-import fr.celestoria.wizzard.boards.WaitingBoard;
 import fr.celestoria.wizzard.game.WizzardGame;
 import java.util.UUID;
 import org.bukkit.Bukkit;
@@ -27,22 +22,13 @@ public class DefaultListeners implements Listener {
 
   @EventHandler
   public void onStatusChange(StatusChangeEvent event) {
+    CelestWizzard.getInstance().getGame().updateScoreboards();
     Status status = event.getStatus();
     switch (status) {
       case WAITING_FOR_PLAYERS:
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
           onlinePlayer.sendMessage(
               Prefix.GAME_WIZZARD + "§cDémarrage annulé, il n'y a plus assez de joueurs !");
-          new WaitingBoard(onlinePlayer).updateBoard();
-        }
-        break;
-      case READY_TO_START:
-      case STARTING:
-        for (UUID uuid : CelestWizzard.getInstance().getGame().getGamePlayers().keySet()) {
-          Player player = Bukkit.getPlayer(uuid);
-          if (player != null) {
-            new StartingBoard(player).updateBoard();
-          }
         }
         break;
       case IN_GAME:
@@ -55,14 +41,6 @@ public class DefaultListeners implements Listener {
           player
               .getInventory()
               .setItem(0, new ItemBuilder(Material.STICK).setName("§dBaguette magique"));
-        }
-        break;
-      case FINISHED:
-        for (UUID uuid : CelestWizzard.getInstance().getGame().getGamePlayers().keySet()) {
-          Player player = Bukkit.getPlayer(uuid);
-          if (player != null) {
-            new FinishedBoard(player).updateBoard();
-          }
         }
         break;
       default:
@@ -81,10 +59,10 @@ public class DefaultListeners implements Listener {
     switch (game.getGameStatus()) {
       case STARTING:
       case READY_TO_START:
-        new StartingBoard(player).updateBoard();
+        CelestWizzard.getInstance().getGame().updateScoreboards();
         break;
       case WAITING_FOR_PLAYERS:
-        new WaitingBoard(player).updateBoard();
+        CelestWizzard.getInstance().getGame().updateScoreboards();
         break;
       default:
         break;

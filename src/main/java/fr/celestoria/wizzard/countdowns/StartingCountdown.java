@@ -3,8 +3,6 @@ package fr.celestoria.wizzard.countdowns;
 import fr.celestoria.api.enums.Prefix;
 import fr.celestoria.api.gameapi.AbstractCountdown;
 import fr.celestoria.wizzard.CelestWizzard;
-import fr.celestoria.wizzard.boards.GameBoard;
-import fr.celestoria.wizzard.boards.StartingBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -28,6 +26,7 @@ public class StartingCountdown extends AbstractCountdown {
       }
       CelestWizzard.getInstance().getGame().startGame();
     } else {
+      CelestWizzard.getInstance().getGame().updateScoreboards();
       String defaultMessage =
           Prefix.GAME_WIZZARD
               + "Lancement de la partie dans §a"
@@ -38,7 +37,6 @@ public class StartingCountdown extends AbstractCountdown {
       for (Player players : Bukkit.getOnlinePlayers()) {
         players.sendMessage(defaultMessage);
         players.playSound(players.getLocation(), Sound.ORB_PICKUP, 1F, 0.1F);
-        new StartingBoard(players).updateBoard();
       }
     }
   }

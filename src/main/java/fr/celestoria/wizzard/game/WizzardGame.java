@@ -1,17 +1,21 @@
 package fr.celestoria.wizzard.game;
 
+import eu.thesimplecloud.api.service.ServiceState;
 import fr.celestoria.api.gameapi.Game;
 import fr.celestoria.api.gameapi.GamePlayer;
 import fr.celestoria.api.gameapi.GameType;
 import fr.celestoria.api.gameapi.Status;
 import fr.celestoria.api.gameapi.StatusChangeEvent;
 import fr.celestoria.api.utils.ConvertTime;
+import fr.celestoria.api.utils.cloud.ServerUtils;
 import fr.celestoria.wizzard.CelestWizzard;
 import fr.celestoria.wizzard.countdowns.EndCountdown;
 import fr.celestoria.wizzard.countdowns.PreStartingCountdown;
 import fr.celestoria.wizzard.countdowns.StartingCountdown;
 import fr.celestoria.wizzard.listeners.InGameListeners;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 
 public class WizzardGame extends Game {
 
@@ -26,6 +30,7 @@ public class WizzardGame extends Game {
       setGameStatus(Status.WAITING_FOR_PLAYERS);
       cancelTask();
       Bukkit.getPluginManager().callEvent(new StatusChangeEvent(Status.WAITING_FOR_PLAYERS));
+      updateScoreboards();
     }
   }
 
@@ -38,6 +43,7 @@ public class WizzardGame extends Game {
       setCurrentTask(new PreStartingCountdown());
       setGameTask(getCurrentTask().runTaskTimer(CelestWizzard.getInstance(), 0, 20));
       Bukkit.getPluginManager().callEvent(new StatusChangeEvent(Status.READY_TO_START));
+      updateScoreboards();
     }
   }
 
@@ -50,6 +56,7 @@ public class WizzardGame extends Game {
       setCurrentTask(new StartingCountdown());
       setGameTask(getCurrentTask().runTaskTimer(CelestWizzard.getInstance(), 0, 20));
       Bukkit.getPluginManager().callEvent(new StatusChangeEvent(Status.STARTING));
+      updateScoreboards();
     }
   }
 
@@ -64,6 +71,8 @@ public class WizzardGame extends Game {
       Bukkit.getPluginManager().callEvent(new StatusChangeEvent(Status.IN_GAME));
       setCurrentListener(new InGameListeners());
       Bukkit.getPluginManager().registerEvents(getCurrentListener(), CelestWizzard.getInstance());
+      ServerUtils.updateState(ServiceState.INVISIBLE);
+      updateScoreboards();
     }
   }
 
@@ -75,8 +84,14 @@ public class WizzardGame extends Game {
       cancelTask();
       setCurrentTask(new EndCountdown());
       setGameTask(getCurrentTask().runTaskTimer(CelestWizzard.getInstance(), 0, 20));
+      HandlerList.unregisterAll(getCurrentListener());
       Bukkit.getPluginManager().callEvent(new StatusChangeEvent(Status.FINISHED));
+      updateScoreboards();
     }
+  }
+
+  public void updateScoreboard(Player player) {
+    updateScoreboard(getGamePlayer(player));
   }
 
   @Override

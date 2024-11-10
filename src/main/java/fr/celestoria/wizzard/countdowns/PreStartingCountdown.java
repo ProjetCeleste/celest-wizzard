@@ -3,9 +3,7 @@ package fr.celestoria.wizzard.countdowns;
 import fr.celestoria.api.enums.Prefix;
 import fr.celestoria.api.gameapi.AbstractCountdown;
 import fr.celestoria.wizzard.CelestWizzard;
-import fr.celestoria.wizzard.boards.StartingBoard;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 public class PreStartingCountdown extends AbstractCountdown {
@@ -33,9 +31,6 @@ public class PreStartingCountdown extends AbstractCountdown {
       default:break;
     }
 
-    for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-      onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.ORB_PICKUP, 1f, 0.1f);
-      new StartingBoard(onlinePlayer).updateBoard();
-    }
+    CelestWizzard.getInstance().getGame().updateScoreboards();
   }
 }

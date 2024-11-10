@@ -2,7 +2,6 @@ package fr.celestoria.wizzard.game;
 
 import fr.celestoria.api.gameapi.AbstractCountdown;
 import fr.celestoria.wizzard.CelestWizzard;
-import fr.celestoria.wizzard.boards.GameBoard;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -38,9 +37,7 @@ public class LoopScheduler extends AbstractCountdown {
       secondUpdated = true;
       timeLeft--;
 
-      for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
-        new GameBoard(onlinePlayers).updateBoard();
-      }
+      CelestWizzard.getInstance().getGame().updateScoreboards();
     }
 
     if (timeLeft <= 0) {

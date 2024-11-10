@@ -2,7 +2,6 @@ package fr.celestoria.wizzard.listeners;
 
 import fr.celestoria.api.utils.inv.ItemBuilder;
 import fr.celestoria.wizzard.CelestWizzard;
-import fr.celestoria.wizzard.boards.GameBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -15,9 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.Collection;
@@ -71,7 +67,7 @@ public class InGameListeners implements Listener {
             nearPlayers.damage(1337);
             doubleKill++;
             CelestWizzard.getInstance().getGame().getGamePlayer(player).newKill();
-            new GameBoard(player).updateBoard();
+            CelestWizzard.getInstance().getGame().updateScoreboard(player);
           }
           if (doubleKill == 2) // Si il y a eu un doublekill
           {
