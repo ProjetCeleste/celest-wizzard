@@ -30,7 +30,7 @@ public class WizzardGame extends Game {
   @Override
   public void preStartingGame() {
     Status gameStatus = getGameStatus();
-    if(gameStatus.equals(Status.WAITING_FOR_PLAYERS)) {
+    if (gameStatus.equals(Status.WAITING_FOR_PLAYERS)) {
       setGameStatus(Status.READY_TO_START);
       cancelTask();
       setCurrentTask(new PreStartingCountdown());
@@ -42,7 +42,7 @@ public class WizzardGame extends Game {
   @Override
   public void startingGame() {
     Status gameStatus = getGameStatus();
-    if(gameStatus.equals(Status.READY_TO_START)) {
+    if (gameStatus.equals(Status.READY_TO_START)) {
       setGameStatus(Status.STARTING);
       cancelTask();
       setCurrentTask(new StartingCountdown());
@@ -68,7 +68,7 @@ public class WizzardGame extends Game {
   @Override
   public void endGame() {
     Status gameStatus = getGameStatus();
-    if(gameStatus.equals(Status.IN_GAME)) {
+    if (gameStatus.equals(Status.IN_GAME)) {
       setGameStatus(Status.FINISHED);
       cancelTask();
       setCurrentTask(new EndCountdown());

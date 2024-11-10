@@ -19,15 +19,22 @@ public class StartingCountdown extends AbstractCountdown {
   public void run() {
     timer--;
     if (timer <= 0) {
-      String rulesMessage = Prefix.GAME_WIZZARD
-          + "Elimine tes adversaires avec un baton magique. Lorsque tu fais clic droit avec celui-là un sort est lancé tout droit !";
+      String rulesMessage =
+          Prefix.GAME_WIZZARD
+              + "Elimine tes adversaires avec un baton magique. Lorsque tu fais clic droit avec celui-là un sort est lancé tout droit !";
       for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
         onlinePlayer.sendMessage(rulesMessage);
         onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.ENDERDRAGON_GROWL, 1f, 0.1f);
       }
       CelestWizzard.getInstance().getGame().startGame();
     } else {
-      String defaultMessage = Prefix.GAME_WIZZARD + "Lancement de la partie dans §a" + timer + " seconde" + (timer == 1 ? "" : "s") + "§f.";
+      String defaultMessage =
+          Prefix.GAME_WIZZARD
+              + "Lancement de la partie dans §a"
+              + timer
+              + " seconde"
+              + (timer == 1 ? "" : "s")
+              + "§f.";
       for (Player players : Bukkit.getOnlinePlayers()) {
         players.sendMessage(defaultMessage);
         players.playSound(players.getLocation(), Sound.ORB_PICKUP, 1F, 0.1F);

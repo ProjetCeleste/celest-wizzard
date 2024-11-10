@@ -31,7 +31,8 @@ public class DefaultListeners implements Listener {
     switch (status) {
       case WAITING_FOR_PLAYERS:
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-          onlinePlayer.sendMessage(Prefix.GAME_WIZZARD + "§cDémarrage annulé, il n'y a plus assez de joueurs !");
+          onlinePlayer.sendMessage(
+              Prefix.GAME_WIZZARD + "§cDémarrage annulé, il n'y a plus assez de joueurs !");
           new WaitingBoard(onlinePlayer).updateBoard();
         }
         break;
@@ -51,7 +52,9 @@ public class DefaultListeners implements Listener {
             return;
           }
           PlayerUtils.cleanPlayer(player);
-          player.getInventory().setItem(0, new ItemBuilder(Material.STICK).setName("§dBaguette magique"));
+          player
+              .getInventory()
+              .setItem(0, new ItemBuilder(Material.STICK).setName("§dBaguette magique"));
         }
         break;
       case FINISHED:
@@ -62,7 +65,8 @@ public class DefaultListeners implements Listener {
           }
         }
         break;
-      default:break;
+      default:
+        break;
     }
   }
 
@@ -82,7 +86,8 @@ public class DefaultListeners implements Listener {
       case WAITING_FOR_PLAYERS:
         new WaitingBoard(player).updateBoard();
         break;
-      default:break;
+      default:
+        break;
     }
   }
 

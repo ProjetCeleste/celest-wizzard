@@ -21,7 +21,8 @@ public class PreStartingCountdown extends AbstractCountdown {
       case 30:
       case 20:
       case 10:
-        String message = Prefix.GAME_WIZZARD + "Lancement de la partie dans §a" + timer + " secondes§f.";
+        String message =
+            Prefix.GAME_WIZZARD + "Lancement de la partie dans §a" + timer + " secondes§f.";
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
           onlinePlayer.sendMessage(message);
         }

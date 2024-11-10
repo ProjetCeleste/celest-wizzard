@@ -22,13 +22,16 @@ public class GameBoard {
     board.updateTitle("§6§lWIZZARD");
 
     board.updateLines(
-        "§8#" + game.getId() + " ❙ " + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
+        "§8#"
+            + game.getId()
+            + " ❙ "
+            + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
         "§r",
-        "  §f▪ Temps restant: §e" + ConvertTime.formatTime(((LoopScheduler) game.getCurrentTask()).getTimeLeft()),
+        "  §f▪ Temps restant: §e"
+            + ConvertTime.formatTime(((LoopScheduler) game.getCurrentTask()).getTimeLeft()),
         "  §f▪ Kills: §b" + game.getGamePlayers().get(player.getUniqueId()).getKills(),
         "  §f▪ Ratio: §a" + game.getGamePlayers().get(player.getUniqueId()).getRatio(),
         "§r",
         "§6play.celestoria.fr");
   }
-
 }

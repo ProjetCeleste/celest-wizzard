@@ -14,8 +14,7 @@ public class CelestWizzard extends JavaPlugin {
   // STATIC FIELDS
   // ========================================================================
 
-  @Getter
-  private static CelestWizzard instance;
+  @Getter private static CelestWizzard instance;
 
   // ========================================================================
   // FIELDS
@@ -26,7 +25,6 @@ public class CelestWizzard extends JavaPlugin {
   // ========================================================================
   // METHODS
   // ========================================================================
-
 
   @Override
   public void onEnable() {

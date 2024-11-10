@@ -38,7 +38,7 @@ public class LoopScheduler extends AbstractCountdown {
       secondUpdated = true;
       timeLeft--;
 
-      for (Player onlinePlayers : Bukkit .getOnlinePlayers()) {
+      for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
         new GameBoard(onlinePlayers).updateBoard();
       }
     }

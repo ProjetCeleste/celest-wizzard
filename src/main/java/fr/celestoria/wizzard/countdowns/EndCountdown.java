@@ -15,13 +15,14 @@ public class EndCountdown extends AbstractCountdown {
   public void run() {
     timer--;
     if (timer == 10) {
-      for(Player players : Bukkit.getOnlinePlayers()){
-        players.sendMessage(Prefix.GAME_WIZZARD + "§aPartie terminée§f. Retour au lobby dans §b5 §fsecondes.");
+      for (Player players : Bukkit.getOnlinePlayers()) {
+        players.sendMessage(
+            Prefix.GAME_WIZZARD + "§aPartie terminée§f. Retour au lobby dans §b5 §fsecondes.");
       }
     }
 
     if (timer == 0) {
-      for(Player players : Bukkit.getOnlinePlayers()){
+      for (Player players : Bukkit.getOnlinePlayers()) {
         players.kickPlayer("§cPartie terminée.");
       }
       Bukkit.shutdown();

@@ -21,7 +21,10 @@ public class StartingBoard {
     board.updateTitle("§6§lWIZZARD");
 
     board.updateLines(
-        "§8#" + game.getId() + " ❙ " + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
+        "§8#"
+            + game.getId()
+            + " ❙ "
+            + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
         "§r",
         "  §f▪ Statut: §eEn attente",
         "  §f▪ Joueurs: §b" + game.countGamePlayers() + "§f/§a" + game.getMaxPlayers(),
@@ -30,6 +33,4 @@ public class StartingBoard {
         "§r",
         "§6play.celestoria.fr");
   }
-
 }
-
