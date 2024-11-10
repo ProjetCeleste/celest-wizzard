@@ -1,6 +1,8 @@
 package fr.celestoria.wizzard.listeners;
 
 import fr.celestoria.api.enums.Prefix;
+import fr.celestoria.api.utils.ActionBar;
+import fr.celestoria.api.utils.ActionBarAPI;
 import fr.celestoria.api.utils.Cooldown;
 import fr.celestoria.api.utils.inv.ItemBuilder;
 import fr.celestoria.api.utils.xutils.XSound;
@@ -79,7 +81,6 @@ public class InGameListeners implements Listener {
             }
           } else {
             doubleKill++;
-            CelestWizzard.getInstance().getGame().getGamePlayer(player).newKill();
             CelestWizzard.getInstance().getGame().updateScoreboard(player);
           }
           if (doubleKill == 2) {
@@ -108,13 +109,13 @@ public class InGameListeners implements Listener {
     Player victim = Bukkit.getPlayer(victimUUID);
     UUID killerUUID = killer.getUniqueId();
 
-    killer.sendMessage(Prefix.GAME_WIZZARD + "§7Vous avez tué " + victim.getName() + ".");
-    victim.sendMessage(Prefix.GAME_WIZZARD + "§7Vous avez été tué par " + killer.getName() + ".");
+    ActionBar.sendActionBar(killer, Prefix.GAME_WIZZARD + "§7Vous avez tué §b" + victim.getName() + "§7.");
+    ActionBar.sendActionBar(victim, Prefix.GAME_WIZZARD + "§7Vous avez été tué par §b" + killer.getName() + "§7.");
 
     game.getGamePlayers().get(victimUUID).newDeath();
     game.getGamePlayers().get(killerUUID).newKill();
 
-    victim.teleport(game.findSpawn());
+    game.getGamePlayers().get(victimUUID).secretTeleport(game.findSpawn());
     XSound.ENTITY_VILLAGER_DEATH.play(victim);
     XSound.ENTITY_ARROW_HIT_PLAYER.play(killer);
 

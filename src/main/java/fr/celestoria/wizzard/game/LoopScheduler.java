@@ -3,8 +3,6 @@ package fr.celestoria.wizzard.game;
 import fr.celestoria.api.gameapi.AbstractCountdown;
 import fr.celestoria.wizzard.CelestWizzard;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 @Getter
 public class LoopScheduler extends AbstractCountdown {

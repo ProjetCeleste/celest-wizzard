@@ -13,9 +13,11 @@ import fr.celestoria.wizzard.countdowns.EndCountdown;
 import fr.celestoria.wizzard.countdowns.PreStartingCountdown;
 import fr.celestoria.wizzard.countdowns.StartingCountdown;
 import fr.celestoria.wizzard.listeners.InGameListeners;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.scoreboard.Team;
 
 public class WizzardGame extends Game {
 
@@ -73,6 +75,9 @@ public class WizzardGame extends Game {
       Bukkit.getPluginManager().registerEvents(getCurrentListener(), CelestWizzard.getInstance());
       ServerUtils.updateState(ServiceState.INVISIBLE);
       updateScoreboards();
+      for (UUID uuid : getGamePlayers().keySet()) {
+        getScoreboard().getTeam("default").addPlayer(Bukkit.getPlayer(uuid));
+      }
     }
   }
 
@@ -134,7 +139,8 @@ public class WizzardGame extends Game {
             "§r",
             "  §f▪ Temps restant: §e"
                 + ConvertTime.formatTime(((LoopScheduler) getCurrentTask()).getTimeLeft()),
-            "  §f▪ Kills: §b" + gamePlayer.getKills(),
+            "  §f▪ Kill(s): §b" + gamePlayer.getKills(),
+            "  §f▪ Mort(s): §c" + gamePlayer.getDeaths(),
             "  §f▪ Ratio: §a" + gamePlayer.getRatio(),
             "§r",
             "§6play.celestoria.fr"
@@ -147,8 +153,10 @@ public class WizzardGame extends Game {
                 + " ❙ "
                 + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
             "§r",
-            "  §f▪ &aPartie terminée !",
+            "  §f▪ §aPartie terminée !",
             "  §f▪ Kills: §b" + gamePlayer.getKills(),
+            "  §f▪ Mort(s): §c" + gamePlayer.getDeaths(),
+            "  §f▪ Ratio: §a" + gamePlayer.getRatio(),
             "§r",
             "§6play.celestoria.fr"
         );
