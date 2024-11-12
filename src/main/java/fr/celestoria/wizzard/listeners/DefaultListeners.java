@@ -73,7 +73,6 @@ public class DefaultListeners implements Listener {
     Player player = event.getPlayer();
     game.handleLogin(player);
 
-
     CelestWizzard.getInstance().getGame().updateScoreboard(player);
   }
 

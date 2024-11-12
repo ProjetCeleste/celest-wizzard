@@ -28,7 +28,8 @@ public class PreStartingCountdown extends AbstractCountdown {
       case 5:
         CelestWizzard.getInstance().getGame().startingGame();
         break;
-      default:break;
+      default:
+        break;
     }
 
     CelestWizzard.getInstance().getGame().updateScoreboards();

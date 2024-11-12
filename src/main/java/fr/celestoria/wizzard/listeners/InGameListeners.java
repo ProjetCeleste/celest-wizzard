@@ -40,7 +40,8 @@ public class InGameListeners implements Listener {
   private static final Cooldown launchCooldown = new Cooldown(CelestWizzard.getInstance(), 500);
 
   private static final double SHOOT_STEP = 0.3D; // Précision de tir
-  private static final int SHOOT_MAX_CHECKS = 150; // Distance de tir = SHOOT_MAX_CHECKS * SHOOT_STEP
+  private static final int SHOOT_MAX_CHECKS =
+      150; // Distance de tir = SHOOT_MAX_CHECKS * SHOOT_STEP
   private static final double SHOOT_RADIUS = 3D; // Hitbox du tir
 
   // ========================================================================
@@ -49,10 +50,8 @@ public class InGameListeners implements Listener {
 
   private void launchTrail(Player player) {
     final Location loc = player.getEyeLocation().clone();
-    final Vector dir =
-        loc.getDirection().normalize().multiply(SHOOT_STEP);
-    final Collection<? extends Player> onlinePlayers =
-        Bukkit.getServer().getOnlinePlayers();
+    final Vector dir = loc.getDirection().normalize().multiply(SHOOT_STEP);
+    final Collection<? extends Player> onlinePlayers = Bukkit.getServer().getOnlinePlayers();
     Set<UUID> hurtedPlayers = new HashSet<>(0);
     Block lastBlock = null;
     int doubleKill = 0;
@@ -72,19 +71,26 @@ public class InGameListeners implements Listener {
             && !nearPlayers.isDead()
             && !hurtedPlayers.contains(nearPlayers.getUniqueId())) {
 
-          if (nearPlayers.getInventory().getChestplate() != null) {
-            if (nearPlayers.getInventory().getChestplate().getType().equals(Material.DIAMOND_CHESTPLATE)) {
-              nearPlayers.getInventory().setChestplate(null);
-              XSound.ITEM_SHIELD_BREAK.play(nearPlayers);
-            }
-          } else {
-            hurtedPlayers.add(nearPlayers.getUniqueId());
-            doubleKill++;
-            CelestWizzard.getInstance().getGame().updateScoreboard(player);
+          if (nearPlayers.getInventory().getChestplate() != null
+              && nearPlayers.getInventory().getChestplate().getType()
+                  == Material.DIAMOND_CHESTPLATE) {
+
+            nearPlayers.getInventory().setChestplate(null);
+            XSound.ITEM_SHIELD_BREAK.play(nearPlayers);
+            continue;
           }
+
+          hurtedPlayers.add(nearPlayers.getUniqueId());
+          doubleKill++;
+          CelestWizzard.getInstance().getGame().updateScoreboard(player);
+
           if (doubleKill == 2) {
             Bukkit.broadcastMessage(
-                "§e§lWOW ! §d" + player.getName() + " §evient de faire un §d§l" + doubleKill + " kills §e!");
+                "§e§lWOW ! §d"
+                    + player.getName()
+                    + " §evient de faire §d§l"
+                    + doubleKill
+                    + " kills d'un coup §e!");
             player.getInventory().setChestplate(new ItemBuilder(Material.DIAMOND_CHESTPLATE));
             XSound.ENTITY_PLAYER_LEVELUP.play(player);
           }

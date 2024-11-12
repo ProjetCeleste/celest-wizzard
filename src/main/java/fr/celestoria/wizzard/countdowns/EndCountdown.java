@@ -1,7 +1,10 @@
 package fr.celestoria.wizzard.countdowns;
 
+import fr.celestoria.api.database.Account;
+import fr.celestoria.api.database.AccountProvider;
 import fr.celestoria.api.enums.Prefix;
 import fr.celestoria.api.gameapi.AbstractCountdown;
+import fr.celestoria.api.gameapi.GamePlayer;
 import fr.celestoria.api.gameapi.Leaderboard;
 import fr.celestoria.api.utils.Titles;
 import fr.celestoria.wizzard.CelestWizzard;
@@ -22,16 +25,21 @@ public class EndCountdown extends AbstractCountdown {
   public void run() {
     timer--;
     if (timer == 10) {
-      Leaderboard leaderboard = new Leaderboard(CelestWizzard.getInstance().getGame().getGamePlayers());
-      List<Map.Entry<UUID, Integer>> leaderList = leaderboard.getTopGamePlayers(3);
-      String leaderboardMessage = "\n  §f▪ §6§lPremier: §6" + Bukkit.getOfflinePlayer(leaderList.get(0).getKey()).getName() + " §7(" + leaderList.get(0).getValue() + ")"
-          + "\n  §f▪ §7§lDeuxième: §7"  + Bukkit.getOfflinePlayer(leaderList.get(1).getKey()).getName() + " §7(" + leaderList.get(1).getValue() + ")"
-          + "\n  §f▪ §8§lTroisième: §8" + Bukkit.getOfflinePlayer(leaderList.get(2).getKey()).getName() + " §7(" + leaderList.get(2).getValue() + ")\n§r ";
+      Leaderboard leaderboard =
+          new Leaderboard(CelestWizzard.getInstance().getGame().getGamePlayers());
+
+      giveCoins();
+
       for (Player players : Bukkit.getOnlinePlayers()) {
+        players.sendMessage(leaderboard.getLeaderboardMessage());
         players.sendMessage(
-            Prefix.GAME_WIZZARD + "§aPartie terminée§f. Retour au lobby dans §b5 §fsecondes.");
-        players.sendMessage(leaderboardMessage);
-        Titles.sendTitle(players, "§a§lPartie terminée", "§eVainqueur: §b" + Bukkit.getOfflinePlayer(leaderList.get(0).getKey()).getName());
+            Prefix.GAME_WIZZARD + "§aPartie terminée§f. Retour au lobby dans §b10 §fsecondes.");
+        Titles.sendTitle(
+            players,
+            "§a§lPartie terminée",
+            "§eVainqueur: §b"
+                + Bukkit.getOfflinePlayer(leaderboard.getTopGamePlayers(1).get(0).getKey())
+                    .getName());
       }
     }
 
@@ -39,7 +47,28 @@ public class EndCountdown extends AbstractCountdown {
       for (Player players : Bukkit.getOnlinePlayers()) {
         players.kickPlayer("§cPartie terminée.");
       }
-      Bukkit.shutdown();
+      // Bukkit.shutdown();
+    }
+  }
+
+  private void giveCoins() {
+    for (GamePlayer gamePlayer : CelestWizzard.getInstance().getGame().getGamePlayers().values()) {
+      Player player = gamePlayer.getPlayerIfOnline();
+      if (player != null) {
+        double coins = 1.5 * (gamePlayer.getKills() + gamePlayer.getFinalkills());
+        int finalCoins = (int) Math.round(coins);
+        AccountProvider accountProvider = new AccountProvider(player.getUniqueId());
+        Account account = accountProvider.getAccount();
+        if (account != null) {
+          account.addCoins(finalCoins);
+          player.sendMessage(
+              Prefix.GAME_WIZZARD
+                  + "§fVous avez gagné §e+"
+                  + finalCoins
+                  + " §e"
+                  + Prefix.SYMBOL_COINS);
+        }
+      }
     }
   }
 }

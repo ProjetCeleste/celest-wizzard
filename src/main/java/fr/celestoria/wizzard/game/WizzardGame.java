@@ -105,71 +105,79 @@ public class WizzardGame extends Game {
   public void updateScoreboard(GamePlayer gamePlayer) {
     switch (getGameStatus()) {
       case WAITING_FOR_PLAYERS:
-        gamePlayer.getBoard().updateLines("§8#"
-                + getId()
-                + " ❙ "
-                + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
-            "§r",
-            "  §f▪ Statut: §eEn attente",
-            "§r",
-            "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getWorldName(),
-            "  §f▪ Joueurs: §b" + countGamePlayers() + "§f/§a" + getMaxPlayers(),
-            "§r",
-            "  §f▪ §7Attente de joueurs...",
-            "§r",
-            "§6play.celestoria.fr"
-        );
+        gamePlayer
+            .getBoard()
+            .updateLines(
+                "§8#"
+                    + getId()
+                    + " ❙ "
+                    + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
+                "§r",
+                "  §f▪ Statut: §eEn attente",
+                "§r",
+                "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getWorldName(),
+                "  §f▪ Joueurs: §b" + countGamePlayers() + "§f/§a" + getMaxPlayers(),
+                "§r",
+                "  §f▪ §7Attente de joueurs...",
+                "§r",
+                "§6play.celestoria.fr");
         break;
       case READY_TO_START:
       case STARTING:
-        gamePlayer.getBoard().updateLines("§8#"
-                + getId()
-                + " ❙ "
-                + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
-            "§r",
-            "  §f▪ Statut: §eEn attente",
-            "§r",
-            "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getWorldName(),
-            "  §f▪ Joueurs: §b" + countGamePlayers() + "§f/§a" + getMaxPlayers(),
-            "§r",
-            "  §f▪ §fDémarrage dans: §a" + ConvertTime.formatTime(getCurrentTask().getTimer()),
-            "§r",
-            "§6play.celestoria.fr");
+        gamePlayer
+            .getBoard()
+            .updateLines(
+                "§8#"
+                    + getId()
+                    + " ❙ "
+                    + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
+                "§r",
+                "  §f▪ Statut: §eEn attente",
+                "§r",
+                "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getWorldName(),
+                "  §f▪ Joueurs: §b" + countGamePlayers() + "§f/§a" + getMaxPlayers(),
+                "§r",
+                "  §f▪ §fDémarrage dans: §a" + ConvertTime.formatTime(getCurrentTask().getTimer()),
+                "§r",
+                "§6play.celestoria.fr");
         break;
       case IN_GAME:
-        gamePlayer.getBoard().updateLines(
-            "§8#"
-                + getId()
-                + " ❙ "
-                + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
-            "§r",
-            "  §f▪ Temps restant: §e"
-                + ConvertTime.formatTime(((LoopScheduler) getCurrentTask()).getTimeLeft()),
-            "  §f▪ Kill(s): §b" + gamePlayer.getKills(),
-            "  §f▪ Mort(s): §c" + gamePlayer.getDeaths(),
-            "  §f▪ Ratio: §a" + gamePlayer.getRatio(),
-            "§r",
-            "§6play.celestoria.fr"
-        );
+        gamePlayer
+            .getBoard()
+            .updateLines(
+                "§8#"
+                    + getId()
+                    + " ❙ "
+                    + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
+                "§r",
+                "  §f▪ Temps restant: §e"
+                    + ConvertTime.formatTime(((LoopScheduler) getCurrentTask()).getTimeLeft()),
+                "  §f▪ Kill(s): §b" + gamePlayer.getKills(),
+                "  §f▪ Mort(s): §c" + gamePlayer.getDeaths(),
+                "  §f▪ Ratio: §a" + gamePlayer.getRatio(),
+                "§r",
+                "§6play.celestoria.fr");
         break;
       case FINISHED:
-        gamePlayer.getBoard().updateLines(
-            "§8#"
-                + getId()
-                + " ❙ "
-                + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
-            "§r",
-            "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getWorldName(),
-            "§r",
-            "  §f▪ §aPartie terminée !",
-            "  §f▪ Kills: §b" + gamePlayer.getKills(),
-            "  §f▪ Mort(s): §c" + gamePlayer.getDeaths(),
-            "  §f▪ Ratio: §a" + gamePlayer.getRatio(),
-            "§r",
-            "§6play.celestoria.fr"
-        );
+        gamePlayer
+            .getBoard()
+            .updateLines(
+                "§8#"
+                    + getId()
+                    + " ❙ "
+                    + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
+                "§r",
+                "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getWorldName(),
+                "§r",
+                "  §f▪ §aPartie terminée !",
+                "  §f▪ Kills: §b" + gamePlayer.getKills(),
+                "  §f▪ Mort(s): §c" + gamePlayer.getDeaths(),
+                "  §f▪ Ratio: §a" + gamePlayer.getRatio(),
+                "§r",
+                "§6play.celestoria.fr");
         break;
-      default:break;
+      default:
+        break;
     }
   }
 }
