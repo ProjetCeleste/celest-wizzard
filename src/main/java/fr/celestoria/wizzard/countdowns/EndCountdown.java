@@ -47,7 +47,7 @@ public class EndCountdown extends AbstractCountdown {
       for (Player players : Bukkit.getOnlinePlayers()) {
         players.kickPlayer("§cPartie terminée.");
       }
-      // Bukkit.shutdown();
+      Bukkit.shutdown();
     }
   }
 

@@ -97,10 +97,6 @@ public class WizzardGame extends Game {
     }
   }
 
-  public void updateScoreboard(Player player) {
-    updateScoreboard(getGamePlayer(player));
-  }
-
   @Override
   public void updateScoreboard(GamePlayer gamePlayer) {
     switch (getGameStatus()) {

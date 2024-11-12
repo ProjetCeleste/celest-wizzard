@@ -35,11 +35,14 @@ public class LoopScheduler extends AbstractCountdown {
       secondUpdated = true;
       timeLeft--;
 
+      if (timeLeft <= 0) {
+        CelestWizzard.getInstance().getGame().endGame();
+        return;
+      }
+
       CelestWizzard.getInstance().getGame().updateScoreboards();
     }
 
-    if (timeLeft <= 0) {
-      CelestWizzard.getInstance().getGame().endGame();
-    }
+
   }
 }

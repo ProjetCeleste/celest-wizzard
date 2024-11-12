@@ -72,8 +72,7 @@ public class InGameListeners implements Listener {
             && !hurtedPlayers.contains(nearPlayers.getUniqueId())) {
 
           if (nearPlayers.getInventory().getChestplate() != null
-              && nearPlayers.getInventory().getChestplate().getType()
-                  == Material.DIAMOND_CHESTPLATE) {
+              && nearPlayers.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
 
             nearPlayers.getInventory().setChestplate(null);
             XSound.ITEM_SHIELD_BREAK.play(nearPlayers);
@@ -96,6 +95,7 @@ public class InGameListeners implements Listener {
           }
         }
       }
+
 
       if (i > 2) {
         player.getWorld().playEffect(loc, Effect.COLOURED_DUST, 5);
