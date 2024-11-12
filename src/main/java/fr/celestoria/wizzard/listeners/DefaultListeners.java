@@ -20,6 +20,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -50,7 +51,7 @@ public class DefaultListeners implements Listener {
           player
               .getInventory()
               .setItem(0, new ItemBuilder(Material.STICK).setName("§dBaguette magique"));
-          player.teleport(locs.get(0));
+          CelestWizzard.getInstance().getGame().getGamePlayer(player).secretTeleport(locs.get(0));
           locs.remove(0);
         }
         break;
@@ -82,6 +83,11 @@ public class DefaultListeners implements Listener {
 
     WizzardGame game = CelestWizzard.getInstance().getGame();
     game.handleLogout(event.getPlayer());
+  }
+
+  @EventHandler
+  public void onPlayerChat(AsyncPlayerChatEvent event) {
+    event.setFormat("%s§f: %s");
   }
 
   @EventHandler

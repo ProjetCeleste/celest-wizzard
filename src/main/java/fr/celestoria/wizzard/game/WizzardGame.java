@@ -111,6 +111,8 @@ public class WizzardGame extends Game {
                 + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
             "§r",
             "  §f▪ Statut: §eEn attente",
+            "§r",
+            "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getWorldName(),
             "  §f▪ Joueurs: §b" + countGamePlayers() + "§f/§a" + getMaxPlayers(),
             "§r",
             "  §f▪ §7Attente de joueurs...",
@@ -126,6 +128,8 @@ public class WizzardGame extends Game {
                 + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
             "§r",
             "  §f▪ Statut: §eEn attente",
+            "§r",
+            "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getWorldName(),
             "  §f▪ Joueurs: §b" + countGamePlayers() + "§f/§a" + getMaxPlayers(),
             "§r",
             "  §f▪ §fDémarrage dans: §a" + ConvertTime.formatTime(getCurrentTask().getTimer()),
@@ -155,6 +159,8 @@ public class WizzardGame extends Game {
                 + " ❙ "
                 + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
             "§r",
+            "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getWorldName(),
+            "§r",
             "  §f▪ §aPartie terminée !",
             "  §f▪ Kills: §b" + gamePlayer.getKills(),
             "  §f▪ Mort(s): §c" + gamePlayer.getDeaths(),
@@ -162,6 +168,7 @@ public class WizzardGame extends Game {
             "§r",
             "§6play.celestoria.fr"
         );
+        break;
       default:break;
     }
   }

@@ -108,8 +108,8 @@ public class InGameListeners implements Listener {
     Player victim = Bukkit.getPlayer(victimUUID);
     UUID killerUUID = killer.getUniqueId();
 
-    ActionBar.sendActionBar(killer, Prefix.GAME_WIZZARD + "§7Vous avez tué §b" + victim.getName() + "§7.");
-    ActionBar.sendActionBar(victim, Prefix.GAME_WIZZARD + "§7Vous avez été tué par §b" + killer.getName() + "§7.");
+    ActionBar.sendActionBar(killer, "§7Vous avez tué §b" + victim.getName() + "§7.");
+    ActionBar.sendActionBar(victim, "§7Vous avez été tué par §b" + killer.getName() + "§7.");
 
     game.getGamePlayers().get(victimUUID).newDeath();
     game.getGamePlayers().get(killerUUID).newKill();
