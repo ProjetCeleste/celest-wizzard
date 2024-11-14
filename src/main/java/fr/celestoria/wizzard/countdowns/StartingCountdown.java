@@ -24,7 +24,7 @@ public class StartingCountdown extends AbstractCountdown {
         onlinePlayer.sendMessage(rulesMessage);
         XSound.ENTITY_ENDER_DRAGON_GROWL.play(onlinePlayer);
       }
-      CelestWizzard.getInstance().getGame().startGame();
+      CelestWizzard.getInstance().getGame().startWizardGame();
     } else {
       CelestWizzard.getInstance().getGame().updateScoreboards();
       String defaultMessage =

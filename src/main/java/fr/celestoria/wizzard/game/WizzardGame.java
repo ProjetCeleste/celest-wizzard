@@ -1,98 +1,38 @@
 package fr.celestoria.wizzard.game;
 
-import eu.thesimplecloud.api.service.ServiceState;
 import fr.celestoria.api.gameapi.Game;
 import fr.celestoria.api.gameapi.GamePlayer;
 import fr.celestoria.api.gameapi.GameType;
-import fr.celestoria.api.gameapi.Status;
-import fr.celestoria.api.gameapi.StatusChangeEvent;
 import fr.celestoria.api.utils.ConvertTime;
-import fr.celestoria.api.utils.cloud.ServerUtils;
 import fr.celestoria.wizzard.CelestWizzard;
 import fr.celestoria.wizzard.countdowns.EndCountdown;
 import fr.celestoria.wizzard.countdowns.PreStartingCountdown;
 import fr.celestoria.wizzard.countdowns.StartingCountdown;
-import fr.celestoria.wizzard.listeners.InGameListeners;
+import fr.celestoria.wizzard.listeners.GameListeners;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
 
 public class WizzardGame extends Game {
 
+  // Exemple of future code (with provider -> Redis TODO)
+  private boolean isHost;
+
   public WizzardGame() {
     super(GameType.WIZZARD);
+    initCountdowns(
+        new PreStartingCountdown(),
+        new StartingCountdown(),
+        new LoopScheduler(),
+        new EndCountdown());
   }
 
-  @Override
-  public void waitingGame() {
-    Status gameStatus = getGameStatus();
-    if (gameStatus.equals(Status.READY_TO_START) || gameStatus.equals(Status.STARTING)) {
-      setGameStatus(Status.WAITING_FOR_PLAYERS);
-      cancelTask();
-      Bukkit.getPluginManager().callEvent(new StatusChangeEvent(Status.WAITING_FOR_PLAYERS));
-      updateScoreboards();
-    }
-  }
-
-  @Override
-  public void preStartingGame() {
-    Status gameStatus = getGameStatus();
-    if (gameStatus.equals(Status.WAITING_FOR_PLAYERS)) {
-      setGameStatus(Status.READY_TO_START);
-      cancelTask();
-      setCurrentTask(new PreStartingCountdown());
-      setGameTask(getCurrentTask().runTaskTimer(CelestWizzard.getInstance(), 0, 20));
-      Bukkit.getPluginManager().callEvent(new StatusChangeEvent(Status.READY_TO_START));
-      updateScoreboards();
-    }
-  }
-
-  @Override
-  public void startingGame() {
-    Status gameStatus = getGameStatus();
-    if (gameStatus.equals(Status.READY_TO_START)) {
-      setGameStatus(Status.STARTING);
-      cancelTask();
-      setCurrentTask(new StartingCountdown());
-      setGameTask(getCurrentTask().runTaskTimer(CelestWizzard.getInstance(), 0, 20));
-      Bukkit.getPluginManager().callEvent(new StatusChangeEvent(Status.STARTING));
-      updateScoreboards();
-    }
-  }
-
-  @Override
-  public void startGame() {
-    Status gameStatus = getGameStatus();
-    if (gameStatus.equals(Status.STARTING)) {
-      setGameStatus(Status.IN_GAME);
-      cancelTask();
-      setCurrentTask(new LoopScheduler());
-      setGameTask(getCurrentTask().runTaskTimerAsynchronously(CelestWizzard.getInstance(), 0, 1));
-      Bukkit.getPluginManager().callEvent(new StatusChangeEvent(Status.IN_GAME));
-      setCurrentListener(new InGameListeners());
-      Bukkit.getPluginManager().registerEvents(getCurrentListener(), CelestWizzard.getInstance());
-      ServerUtils.updateState(ServiceState.INVISIBLE);
-      updateScoreboards();
-      for (UUID uuid : getGamePlayers().keySet()) {
-        Player player = Bukkit.getPlayer(uuid);
-        player.setScoreboard(getScoreboard());
-        getScoreboard().getTeam("default").addPlayer(player);
-      }
-    }
-  }
-
-  @Override
-  public void endGame() {
-    Status gameStatus = getGameStatus();
-    if (gameStatus.equals(Status.IN_GAME)) {
-      setGameStatus(Status.FINISHED);
-      cancelTask();
-      setCurrentTask(new EndCountdown());
-      setGameTask(getCurrentTask().runTaskTimer(CelestWizzard.getInstance(), 0, 20));
-      HandlerList.unregisterAll(getCurrentListener());
-      Bukkit.getPluginManager().callEvent(new StatusChangeEvent(Status.FINISHED));
-      updateScoreboards();
+  public void startWizardGame() {
+    super.startGame(new GameListeners());
+    for (UUID uuid : getGamePlayers().keySet()) {
+      Player player = Bukkit.getPlayer(uuid);
+      player.setScoreboard(getScoreboard());
+      getScoreboard().getTeam("default").addPlayer(player);
     }
   }
 
@@ -145,6 +85,8 @@ public class WizzardGame extends Game {
                     + " ❙ "
                     + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
                 "§r",
+                "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getWorldName(),
+                "§r ",
                 "  §f▪ Temps restant: §e"
                     + ConvertTime.formatTime(((LoopScheduler) getCurrentTask()).getTimeLeft()),
                 "  §f▪ Kill(s): §b" + gamePlayer.getKills(),
