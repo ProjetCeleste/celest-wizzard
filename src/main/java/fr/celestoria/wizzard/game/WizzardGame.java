@@ -17,7 +17,6 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.scoreboard.Team;
 
 public class WizzardGame extends Game {
 

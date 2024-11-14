@@ -1,6 +1,5 @@
 package fr.celestoria.wizzard;
 
-import fr.celestoria.api.gameapi.Game;
 import fr.celestoria.wizzard.game.WizzardGame;
 import fr.celestoria.wizzard.listeners.DefaultListeners;
 import lombok.Getter;

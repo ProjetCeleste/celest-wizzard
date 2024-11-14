@@ -1,35 +1,26 @@
 package fr.celestoria.wizzard.listeners;
 
-import fr.celestoria.api.enums.Prefix;
 import fr.celestoria.api.utils.ActionBar;
-import fr.celestoria.api.utils.ActionBarAPI;
 import fr.celestoria.api.utils.Cooldown;
 import fr.celestoria.api.utils.inv.ItemBuilder;
 import fr.celestoria.api.utils.xutils.XSound;
 import fr.celestoria.wizzard.CelestWizzard;
 import fr.celestoria.wizzard.game.WizzardGame;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import org.bukkit.Bukkit;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.util.Vector;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.util.Vector;
 
 public class InGameListeners implements Listener {
 
@@ -72,7 +63,8 @@ public class InGameListeners implements Listener {
             && !hurtedPlayers.contains(nearPlayers.getUniqueId())) {
 
           if (nearPlayers.getInventory().getChestplate() != null
-              && nearPlayers.getInventory().getChestplate().getType() == Material.DIAMOND_CHESTPLATE) {
+              && nearPlayers.getInventory().getChestplate().getType()
+                  == Material.DIAMOND_CHESTPLATE) {
 
             nearPlayers.getInventory().setChestplate(null);
             XSound.ITEM_SHIELD_BREAK.play(nearPlayers);
@@ -95,7 +87,6 @@ public class InGameListeners implements Listener {
           }
         }
       }
-
 
       if (i > 2) {
         player.getWorld().playEffect(loc, Effect.COLOURED_DUST, 5);

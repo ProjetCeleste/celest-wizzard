@@ -42,7 +42,5 @@ public class LoopScheduler extends AbstractCountdown {
 
       CelestWizzard.getInstance().getGame().updateScoreboards();
     }
-
-
   }
 }

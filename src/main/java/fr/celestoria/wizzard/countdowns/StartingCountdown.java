@@ -5,7 +5,6 @@ import fr.celestoria.api.gameapi.AbstractCountdown;
 import fr.celestoria.api.utils.xutils.XSound;
 import fr.celestoria.wizzard.CelestWizzard;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 public class StartingCountdown extends AbstractCountdown {
