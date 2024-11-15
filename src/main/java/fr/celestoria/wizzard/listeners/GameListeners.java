@@ -22,7 +22,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-public class InGameListeners implements Listener {
+public class GameListeners implements Listener {
 
   // ========================================================================
   // STATIC FIELDS

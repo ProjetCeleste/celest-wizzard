@@ -1,7 +1,6 @@
 package fr.celestoria.wizzard;
 
 import fr.celestoria.wizzard.game.WizzardGame;
-import fr.celestoria.wizzard.listeners.DefaultListeners;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,8 +32,6 @@ public class CelestWizzard extends JavaPlugin {
     }
 
     this.game = new WizzardGame();
-
-    Bukkit.getPluginManager().registerEvents(new DefaultListeners(), this);
   }
 
   @Override
