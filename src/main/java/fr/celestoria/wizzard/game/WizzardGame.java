@@ -8,6 +8,7 @@ import fr.celestoria.wizzard.CelestWizzard;
 import fr.celestoria.wizzard.countdowns.EndCountdown;
 import fr.celestoria.wizzard.countdowns.PreStartingCountdown;
 import fr.celestoria.wizzard.countdowns.StartingCountdown;
+import fr.celestoria.wizzard.listeners.DefaultListeners;
 import fr.celestoria.wizzard.listeners.GameListeners;
 import java.util.UUID;
 import org.bukkit.Bukkit;
@@ -25,6 +26,8 @@ public class WizzardGame extends Game {
         new StartingCountdown(),
         new LoopScheduler(),
         new EndCountdown());
+
+    Bukkit.getPluginManager().registerEvents(new DefaultListeners(), CelestWizzard.getInstance());
   }
 
   public void startWizardGame() {

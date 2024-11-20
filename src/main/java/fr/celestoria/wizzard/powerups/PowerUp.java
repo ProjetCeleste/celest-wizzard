@@ -7,6 +7,5 @@ public abstract class PowerUp {
 
   protected GamePlayer gamePlayer;
   protected AbstractCountdown countdown;
-  protected
 
 }
