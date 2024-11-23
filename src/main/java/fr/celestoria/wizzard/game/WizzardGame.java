@@ -3,15 +3,21 @@ package fr.celestoria.wizzard.game;
 import fr.celestoria.api.gameapi.Game;
 import fr.celestoria.api.gameapi.GamePlayer;
 import fr.celestoria.api.gameapi.GameType;
+import fr.celestoria.api.gameapi.Leaderboard;
 import fr.celestoria.api.utils.ConvertTime;
+import fr.celestoria.api.utils.inv.ItemBuilder;
 import fr.celestoria.wizzard.CelestWizzard;
 import fr.celestoria.wizzard.countdowns.EndCountdown;
 import fr.celestoria.wizzard.countdowns.PreStartingCountdown;
 import fr.celestoria.wizzard.countdowns.StartingCountdown;
 import fr.celestoria.wizzard.listeners.DefaultListeners;
 import fr.celestoria.wizzard.listeners.GameListeners;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class WizzardGame extends Game {
@@ -35,6 +41,7 @@ public class WizzardGame extends Game {
     for (UUID uuid : getGamePlayers().keySet()) {
       Player player = Bukkit.getPlayer(uuid);
       player.setScoreboard(getScoreboard());
+      player.getInventory().setItem(0, new ItemBuilder(Material.STICK).setName("§dBaguette magique").setLore("§7Avadaaaaa..."));
       getScoreboard().getTeam("default").addPlayer(player);
     }
   }
@@ -80,6 +87,8 @@ public class WizzardGame extends Game {
                 "§6play.celestoria.fr");
         break;
       case IN_GAME:
+        Leaderboard leaderboard = new Leaderboard(gamePlayers);
+        Entry<UUID, Integer> first = leaderboard.getTopGamePlayers(1).get(0);
         gamePlayer
             .getBoard()
             .updateLines(
@@ -92,6 +101,9 @@ public class WizzardGame extends Game {
                 "§r ",
                 "  §f▪ Temps restant: §e"
                     + ConvertTime.formatTime(((LoopScheduler) getCurrentTask()).getTimeLeft()),
+                "§r",
+                "  §f▪ 1er: §b" + Bukkit.getPlayer(first.getKey()).getName() + " §7(" + first.getValue() + ")",
+                "§r",
                 "  §f▪ Kill(s): §b" + gamePlayer.getKills(),
                 "  §f▪ Mort(s): §c" + gamePlayer.getDeaths(),
                 "  §f▪ Ratio: §a" + gamePlayer.getRatio(),

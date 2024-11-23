@@ -1,5 +1,7 @@
 package fr.celestoria.wizzard.listeners;
 
+import fr.celestoria.api.commands.ClearCacheCommand;
+import fr.celestoria.api.gameapi.Leaderboard;
 import fr.celestoria.api.utils.ActionBar;
 import fr.celestoria.api.utils.Cooldown;
 import fr.celestoria.api.utils.inv.ItemBuilder;
@@ -114,6 +116,12 @@ public class GameListeners implements Listener {
     game.getGamePlayers().get(victimUUID).secretTeleport(game.findSpawn());
     XSound.ENTITY_VILLAGER_DEATH.play(victim);
     XSound.ENTITY_ARROW_HIT_PLAYER.play(killer);
+
+    Leaderboard leaderboard = new Leaderboard(game.getGamePlayers());
+    if (leaderboard.getTopGamePlayers(1).get(0).getValue() >= 30) {
+      game.endGame();
+      return;
+    }
 
     game.updateScoreboard(victim);
     game.updateScoreboard(killer);

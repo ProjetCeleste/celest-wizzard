@@ -1,5 +1,6 @@
 package fr.celestoria.wizzard;
 
+import fr.celestoria.api.gameapi.commands.MapCommand;
 import fr.celestoria.wizzard.game.WizzardGame;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -32,6 +33,8 @@ public class CelestWizzard extends JavaPlugin {
     }
 
     this.game = new WizzardGame();
+
+    getCommand("map").setExecutor(new MapCommand(game));
   }
 
   @Override

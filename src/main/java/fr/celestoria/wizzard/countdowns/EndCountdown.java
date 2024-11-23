@@ -13,37 +13,43 @@ import org.bukkit.entity.Player;
 
 public class EndCountdown extends AbstractCountdown {
 
+  private int ticks = 0;
+
   public EndCountdown() {
     super(11);
   }
 
   @Override
   public void run() {
-    timer--;
-    if (timer == 10) {
-      Leaderboard leaderboard =
-          new Leaderboard(CelestWizzard.getInstance().getGame().getGamePlayers());
+    ticks++;
+    if (ticks % 20 == 0) {
 
-      giveCoins();
+      timer--;
+      if (timer == 10) {
+        Leaderboard leaderboard =
+            new Leaderboard(CelestWizzard.getInstance().getGame().getGamePlayers());
 
-      for (Player players : Bukkit.getOnlinePlayers()) {
-        players.sendMessage(leaderboard.getLeaderboardMessage());
-        players.sendMessage(
-            Prefix.GAME_WIZZARD + "§aPartie terminée§f. Retour au lobby dans §b10 §fsecondes.");
-        Titles.sendTitle(
-            players,
-            "§a§lPartie terminée",
-            "§eVainqueur: §b"
-                + Bukkit.getOfflinePlayer(leaderboard.getTopGamePlayers(1).get(0).getKey())
-                    .getName());
+        giveCoins();
+
+        for (Player players : Bukkit.getOnlinePlayers()) {
+          players.sendMessage(leaderboard.getLeaderboardMessage());
+          players.sendMessage(
+              Prefix.GAME_WIZZARD + "§aPartie terminée§f. Retour au lobby dans §b10 §fsecondes.");
+          Titles.sendTitle(
+              players,
+              "§a§lPartie terminée",
+              "§eVainqueur: §b"
+                  + Bukkit.getOfflinePlayer(leaderboard.getTopGamePlayers(1).get(0).getKey())
+                  .getName());
+        }
       }
-    }
 
-    if (timer == 0) {
-      for (Player players : Bukkit.getOnlinePlayers()) {
-        players.kickPlayer("§cPartie terminée.");
+      if (timer == 0) {
+        for (Player players : Bukkit.getOnlinePlayers()) {
+          players.kickPlayer("§cPartie terminée.");
+        }
+        Bukkit.shutdown();
       }
-      Bukkit.shutdown();
     }
   }
 

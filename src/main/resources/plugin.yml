@@ -5,3 +5,5 @@ main: fr.celestoria.wizzard.CelestWizzard
 depend:
   - celest-api
   - SimpleCloud-Plugin
+commands:
+  map:
