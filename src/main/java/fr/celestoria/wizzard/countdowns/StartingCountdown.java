@@ -2,8 +2,10 @@ package fr.celestoria.wizzard.countdowns;
 
 import fr.celestoria.api.enums.Prefix;
 import fr.celestoria.api.gameapi.AbstractCountdown;
+import fr.celestoria.api.utils.Titles;
 import fr.celestoria.api.utils.xutils.XSound;
 import fr.celestoria.wizzard.CelestWizzard;
+import fr.celestoria.wizzard.game.WizzardGame;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -31,7 +33,8 @@ public class StartingCountdown extends AbstractCountdown {
         }
         CelestWizzard.getInstance().getGame().startWizardGame();
       } else {
-        CelestWizzard.getInstance().getGame().updateScoreboards();
+        WizzardGame game = CelestWizzard.getInstance().getGame();
+        game.updateScoreboards();
         String defaultMessage =
             Prefix.GAME_WIZZARD
                 + "Lancement de la partie dans §a"

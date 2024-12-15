@@ -1,5 +1,7 @@
 package fr.celestoria.wizzard.listeners;
 
+import fr.celestoria.api.database.Account;
+import fr.celestoria.api.database.AccountProvider;
 import fr.celestoria.api.gameapi.Status;
 import fr.celestoria.api.gameapi.StatusChangeEvent;
 import fr.celestoria.api.utils.PlayerUtils;
@@ -73,6 +75,14 @@ public class DefaultListeners implements Listener {
 
   @EventHandler
   public void onPlayerChat(AsyncPlayerChatEvent event) {
+    Status status = CelestWizzard.getInstance().getGame().getGameStatus();
+    if (status == Status.FINISHED && event.getMessage().equalsIgnoreCase("gg")) {
+        Account account = new AccountProvider(event.getPlayer().getUniqueId()).getAccount();
+        if (account.isSubscriptionActive()) {
+          event.setMessage("§e§lGG");
+        }
+      }
+
     event.setFormat("%s§f: %s");
   }
 

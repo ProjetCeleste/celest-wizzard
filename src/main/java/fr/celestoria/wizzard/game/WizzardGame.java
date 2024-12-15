@@ -5,6 +5,7 @@ import fr.celestoria.api.gameapi.GamePlayer;
 import fr.celestoria.api.gameapi.GameType;
 import fr.celestoria.api.gameapi.Leaderboard;
 import fr.celestoria.api.utils.ConvertTime;
+import fr.celestoria.api.utils.Titles;
 import fr.celestoria.api.utils.inv.ItemBuilder;
 import fr.celestoria.wizzard.CelestWizzard;
 import fr.celestoria.wizzard.countdowns.EndCountdown;
@@ -18,7 +19,9 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 
 public class WizzardGame extends Game {
 
@@ -38,11 +41,15 @@ public class WizzardGame extends Game {
 
   public void startWizardGame() {
     super.startGame(new GameListeners());
+    ItemBuilder item = new ItemBuilder(Material.STICK).setName("§dBaguette magique").setLore("§7Avadaaaaa...").addUnsafeEnchant(Enchantment.DURABILITY).addFlag(
+        ItemFlag.HIDE_ENCHANTS);
     for (UUID uuid : getGamePlayers().keySet()) {
       Player player = Bukkit.getPlayer(uuid);
       player.setScoreboard(getScoreboard());
-      player.getInventory().setItem(0, new ItemBuilder(Material.STICK).setName("§dBaguette magique").setLore("§7Avadaaaaa..."));
+      player.getInventory().setItem(0, item);
       getScoreboard().getTeam("default").addPlayer(player);
+      player.getInventory().setHeldItemSlot(0);
+      Titles.sendTitle(player, 10, 40, 10, "§a§lDébut de la partie", "§fBonne chance !");
     }
   }
 
@@ -88,7 +95,7 @@ public class WizzardGame extends Game {
         break;
       case IN_GAME:
         Leaderboard leaderboard = new Leaderboard(gamePlayers);
-        Entry<UUID, Integer> first = leaderboard.getTopGamePlayers(1).get(0);
+        List<Entry<UUID, Integer>> board = leaderboard.getTopGamePlayers(3);
         gamePlayer
             .getBoard()
             .updateLines(
@@ -101,12 +108,14 @@ public class WizzardGame extends Game {
                 "§r ",
                 "  §f▪ Temps restant: §e"
                     + ConvertTime.formatTime(((LoopScheduler) getCurrentTask()).getTimeLeft()),
-                "§r",
-                "  §f▪ 1er: §b" + Bukkit.getPlayer(first.getKey()).getName() + " §7(" + first.getValue() + ")",
-                "§r",
                 "  §f▪ Kill(s): §b" + gamePlayer.getKills(),
                 "  §f▪ Mort(s): §c" + gamePlayer.getDeaths(),
                 "  §f▪ Ratio: §a" + gamePlayer.getRatio(),
+                "§r",
+                "§fClassement:",
+                "  §f▪ §b" + Bukkit.getPlayer(board.get(0).getKey()).getName() + " §7(" + board.get(0).getValue() + ")",
+                "  §f▪ §b" + Bukkit.getPlayer(board.get(1).getKey()).getName() + " §7(" + board.get(1).getValue() + ")",
+                "  §f▪ §b" + (getGamePlayers().keySet().size() >= 3 ? Bukkit.getPlayer(board.get(2).getKey()).getName() + " §7(" + board.get(2).getValue() + ")" : "N/A"),
                 "§r",
                 "§6play.celestoria.fr");
         break;

@@ -4,10 +4,13 @@ import fr.celestoria.api.commands.ClearCacheCommand;
 import fr.celestoria.api.gameapi.Leaderboard;
 import fr.celestoria.api.utils.ActionBar;
 import fr.celestoria.api.utils.Cooldown;
+import fr.celestoria.api.utils.ParticleAPI;
+import fr.celestoria.api.utils.ParticleEffect;
 import fr.celestoria.api.utils.inv.ItemBuilder;
 import fr.celestoria.api.utils.xutils.XSound;
 import fr.celestoria.wizzard.CelestWizzard;
 import fr.celestoria.wizzard.game.WizzardGame;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +24,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
@@ -110,12 +115,15 @@ public class GameListeners implements Listener {
     ActionBar.sendActionBar(killer, "§7Vous avez tué §b" + victim.getName() + "§7.");
     ActionBar.sendActionBar(victim, "§7Vous avez été tué par §b" + killer.getName() + "§7.");
 
+    new ParticleAPI(victim.getLocation().clone().add(0, 1, 0), ParticleEffect.FIREWORKS_SPARK, game.getPlayers().toArray(new Player[0]))
+        .spawnSphere(2, 100, 0.1f);
+    XSound.ENTITY_FIREWORK_ROCKET_BLAST.play(killer);
+
     game.getGamePlayers().get(victimUUID).newDeath();
     game.getGamePlayers().get(killerUUID).newKill();
 
     game.getGamePlayers().get(victimUUID).secretTeleport(game.findSpawn());
     XSound.ENTITY_VILLAGER_DEATH.play(victim);
-    XSound.ENTITY_ARROW_HIT_PLAYER.play(killer);
 
     Leaderboard leaderboard = new Leaderboard(game.getGamePlayers());
     if (leaderboard.getTopGamePlayers(1).get(0).getValue() >= 30) {
@@ -140,5 +148,17 @@ public class GameListeners implements Listener {
       launchCooldown.putInCooldown(player);
       this.launchTrail(player);
     }
+
+    event.setCancelled(true);
+  }
+
+  @EventHandler
+  public void onPlayerInvClick(InventoryClickEvent event) {
+    event.setCancelled(true);
+  }
+
+  @EventHandler
+  public void onItemDrop(PlayerDropItemEvent event) {
+    event.setCancelled(true);
   }
 }
