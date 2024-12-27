@@ -2,6 +2,7 @@ package fr.celestoria.wizzard.listeners;
 
 import fr.celestoria.api.database.Account;
 import fr.celestoria.api.database.AccountProvider;
+import fr.celestoria.api.gameapi.Game;
 import fr.celestoria.api.gameapi.Status;
 import fr.celestoria.api.gameapi.StatusChangeEvent;
 import fr.celestoria.api.utils.PlayerUtils;
@@ -13,11 +14,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -90,6 +93,17 @@ public class DefaultListeners implements Listener {
   public void onDamage(EntityDamageEvent event) {
     if (event.getEntity() instanceof Player) {
       event.setCancelled(true);
+    }
+  }
+
+  @EventHandler
+  public void onPlayerInteract(PlayerInteractEvent event) {
+    if (event.getItem() != null && event.getMaterial().equals(Material.COMMAND) && event.getItem().getItemMeta().getDisplayName().contains("Serveur p")) {
+      Game game = CelestWizzard.getInstance().getGame();
+      Player player = event.getPlayer();
+      if (game.isHostOrCohost(player.getUniqueId())) {
+        game.openRulesGui(player);
+      }
     }
   }
 }

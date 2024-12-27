@@ -1,9 +1,12 @@
 package fr.celestoria.wizzard.game;
 
+import fr.celestoria.api.CelestAPI;
 import fr.celestoria.api.gameapi.Game;
 import fr.celestoria.api.gameapi.GamePlayer;
 import fr.celestoria.api.gameapi.GameType;
 import fr.celestoria.api.gameapi.Leaderboard;
+import fr.celestoria.api.gameapi.host.GameData;
+import fr.celestoria.api.gameapi.host.GameDataProvider;
 import fr.celestoria.api.utils.ConvertTime;
 import fr.celestoria.api.utils.Titles;
 import fr.celestoria.api.utils.inv.ItemBuilder;
@@ -11,10 +14,10 @@ import fr.celestoria.wizzard.CelestWizzard;
 import fr.celestoria.wizzard.countdowns.EndCountdown;
 import fr.celestoria.wizzard.countdowns.PreStartingCountdown;
 import fr.celestoria.wizzard.countdowns.StartingCountdown;
+import fr.celestoria.wizzard.gui.HostRulesGui;
 import fr.celestoria.wizzard.listeners.DefaultListeners;
 import fr.celestoria.wizzard.listeners.GameListeners;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import org.bukkit.Bukkit;
@@ -25,9 +28,6 @@ import org.bukkit.inventory.ItemFlag;
 
 public class WizzardGame extends Game {
 
-  // Exemple of future code (with provider -> Redis TODO)
-  private boolean isHost;
-
   public WizzardGame() {
     super(GameType.WIZZARD);
     initCountdowns(
@@ -35,6 +35,11 @@ public class WizzardGame extends Game {
         new StartingCountdown(),
         new LoopScheduler(),
         new EndCountdown());
+
+    GameData data = new GameDataProvider(CelestAPI.getInstance().getServerDisplayName()).getDataFromRedis();
+    data.set("cooldown", 500);
+
+    setHostSettingsGui(HostRulesGui.class);
 
     Bukkit.getPluginManager().registerEvents(new DefaultListeners(), CelestWizzard.getInstance());
   }
@@ -67,7 +72,7 @@ public class WizzardGame extends Game {
                 "§r",
                 "  §f▪ Statut: §eEn attente",
                 "§r",
-                "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getWorldName(),
+                "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getGameWorldName(),
                 "  §f▪ Joueurs: §b" + countGamePlayers() + "§f/§a" + getMaxPlayers(),
                 "§r",
                 "  §f▪ §7Attente de joueurs...",
@@ -84,9 +89,9 @@ public class WizzardGame extends Game {
                     + " ❙ "
                     + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
                 "§r",
-                "  §f▪ Statut: §eEn attente",
+                "  §f▪ Statut: §aLancement...",
                 "§r",
-                "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getWorldName(),
+                "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getGameWorldName(),
                 "  §f▪ Joueurs: §b" + countGamePlayers() + "§f/§a" + getMaxPlayers(),
                 "§r",
                 "  §f▪ §fDémarrage dans: §a" + ConvertTime.formatTime(getCurrentTask().getTimer()),
@@ -104,7 +109,7 @@ public class WizzardGame extends Game {
                     + " ❙ "
                     + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
                 "§r",
-                "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getWorldName(),
+                "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getGameWorldName(),
                 "§r ",
                 "  §f▪ Temps restant: §e"
                     + ConvertTime.formatTime(((LoopScheduler) getCurrentTask()).getTimeLeft()),
@@ -128,7 +133,7 @@ public class WizzardGame extends Game {
                     + " ❙ "
                     + new ConvertTime(System.currentTimeMillis()).getDateFormatted(),
                 "§r",
-                "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getWorldName(),
+                "  §f▪ Carte: §a" + CelestWizzard.getInstance().getGame().getGameWorldName(),
                 "§r",
                 "  §f▪ §aPartie terminée !",
                 "  §f▪ Kills: §b" + gamePlayer.getKills(),

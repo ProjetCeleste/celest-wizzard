@@ -74,7 +74,7 @@ public class EndCountdown extends AbstractCountdown {
       Player player = gamePlayer.getPlayerIfOnline();
       if (player != null) {
         int totalKills = gamePlayer.getKills() + gamePlayer.getFinalkills();
-        double baseCoins = 1.2 * totalKills;
+        double baseCoins = 0.5 * totalKills;
         int roundBaseCoins = (int) Math.round(baseCoins);
         int finalCoins = 0;
 

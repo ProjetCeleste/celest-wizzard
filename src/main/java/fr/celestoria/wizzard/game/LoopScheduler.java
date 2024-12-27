@@ -1,6 +1,9 @@
 package fr.celestoria.wizzard.game;
 
+import fr.celestoria.api.CelestAPI;
 import fr.celestoria.api.gameapi.AbstractCountdown;
+import fr.celestoria.api.gameapi.host.GameData;
+import fr.celestoria.api.gameapi.host.GameDataProvider;
 import fr.celestoria.wizzard.CelestWizzard;
 import lombok.Getter;
 
@@ -20,6 +23,7 @@ public class LoopScheduler extends AbstractCountdown {
 
   protected LoopScheduler() {
     super(-1);
+    // this.timeLeft = new GameDataProvider(CelestAPI.getInstance().getServerDisplayName()).getDataFromRedis().getInt("minutes");
   }
 
   // ========================================================================

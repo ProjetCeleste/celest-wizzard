@@ -1,6 +1,8 @@
 package fr.celestoria.wizzard.listeners;
 
+import fr.celestoria.api.CelestAPI;
 import fr.celestoria.api.gameapi.Leaderboard;
+import fr.celestoria.api.gameapi.host.GameDataProvider;
 import fr.celestoria.api.utils.ActionBar;
 import fr.celestoria.api.utils.Cooldown;
 import fr.celestoria.api.utils.ParticleAPI;
@@ -30,15 +32,15 @@ import org.bukkit.util.Vector;
 public class GameListeners implements Listener {
 
   // ========================================================================
-  // STATIC FIELDS
+  // FIELDS
   // ========================================================================
 
-  private static final Cooldown launchCooldown = new Cooldown(CelestWizzard.getInstance(), 500);
+  private final Cooldown launchCooldown = new Cooldown(CelestWizzard.getInstance(), new GameDataProvider(CelestAPI.getInstance().getServerDisplayName()).getDataFromRedis().getInt("cooldown"));
 
-  private static final double SHOOT_STEP = 0.3D; // Précision de tir
-  private static final int SHOOT_MAX_CHECKS =
+  private final double SHOOT_STEP = 0.3D; // Précision de tir
+  private final int SHOOT_MAX_CHECKS =
       150; // Distance de tir = SHOOT_MAX_CHECKS * SHOOT_STEP
-  private static final double SHOOT_RADIUS = 3D; // Hitbox du tir
+  private final double SHOOT_RADIUS = 3D; // Hitbox du tir
 
   // ========================================================================
   // METHODS
