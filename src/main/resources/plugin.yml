@@ -1,9 +1,8 @@
 name: celest-wizzard
-author: Shall0wer
+author: Barshing
 version: 1.0
-main: fr.celestoria.wizzard.CelestWizzard
+main: fr.celestoria.arrow.CelestArrow
 depend:
   - celest-api
-  - SimpleCloud-Plugin
 commands:
   map:

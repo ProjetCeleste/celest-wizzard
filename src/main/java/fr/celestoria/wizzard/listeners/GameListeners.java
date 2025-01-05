@@ -81,7 +81,7 @@ public class GameListeners implements Listener {
           doubleKill++;
           CelestWizzard.getInstance().getGame().updateScoreboard(player);
 
-          if (doubleKill == 2) {
+          if (doubleKill >= 2) {
             Bukkit.broadcastMessage(
                 "§e§lWOW ! §d"
                     + player.getName()
