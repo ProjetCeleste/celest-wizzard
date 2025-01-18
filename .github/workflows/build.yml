@@ -27,6 +27,34 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: maven-settings-xml-action
+        uses: whelk-io/maven-settings-xml-action@v20
+        with:
+          repositories: >
+            [
+              {
+                "id": "celest-api",
+                "url": "https://maven.pkg.github.com/ProjetCeleste/celest-api"
+              },
+              {
+                "id": "celest-dependencies",
+                "url": "https://maven.pkg.github.com/ProjetCeleste/celest-dependencies"
+              }
+            ]
+          servers: >
+            [
+              {
+                "id": "celest-api",
+                "username": "${{ secrets.CELEST_USER }}",
+                "password": "${{ secrets.CELEST_TOKEN }}"
+              },
+              {
+                "id": "celest-dependencies",
+                "username": "${{ secrets.CELEST_USER }}",
+                "password": "${{ secrets.CELEST_TOKEN }}"
+              }
+            ]
+
       - name: Build project with Maven
         run: mvn -B package
 
@@ -39,4 +67,3 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           scp -o StrictHostKeyChecking=no target/CelestWizzard.jar $ADDRESS
-
