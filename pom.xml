@@ -74,8 +74,8 @@
 
   <repositories>
     <repository>
-      <id>gradle-release-local</id>
-      <url>https://repo.thesimplecloud.eu/artifactory/list/gradle-release-local/</url>
+      <id>imanity-repo</id>
+      <url>https://repo.imanity.dev/imanity-libraries/</url>
     </repository>
     <repository>
       <id>celestoria-api</id>
