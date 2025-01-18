@@ -1,7 +1,7 @@
 name: celest-wizzard
 author: Barshing
 version: 1.0
-main: fr.celestoria.arrow.CelestArrow
+main: fr.celestoria.wizzard.CelestWizzard
 depend:
   - celest-api
 commands:
