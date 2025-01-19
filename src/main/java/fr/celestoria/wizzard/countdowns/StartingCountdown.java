@@ -14,7 +14,7 @@ public class StartingCountdown extends AbstractCountdown {
   private int ticks = 0;
 
   public StartingCountdown() {
-    super(6);
+    super(5);
   }
 
   @Override

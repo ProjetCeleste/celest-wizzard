@@ -1,6 +1,5 @@
 package fr.celestoria.wizzard.countdowns;
 
-import fr.celestoria.api.CelestAPI;
 import fr.celestoria.api.database.Account;
 import fr.celestoria.api.database.AccountProvider;
 import fr.celestoria.api.enums.Prefix;
@@ -11,11 +10,6 @@ import fr.celestoria.api.utils.JsonMessage;
 import fr.celestoria.api.utils.MathUtils;
 import fr.celestoria.api.utils.Titles;
 import fr.celestoria.wizzard.CelestWizzard;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.UUID;
-import java.util.stream.IntStream;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -24,7 +18,7 @@ public class EndCountdown extends AbstractCountdown {
   private int ticks = 0;
 
   public EndCountdown() {
-    super(11);
+    super(10);
   }
 
   @Override

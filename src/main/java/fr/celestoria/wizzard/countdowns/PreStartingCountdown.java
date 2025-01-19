@@ -13,7 +13,7 @@ public class PreStartingCountdown extends AbstractCountdown {
   private int ticks = 0;
 
   public PreStartingCountdown() {
-    super(31);
+    super(30);
   }
 
   @Override
