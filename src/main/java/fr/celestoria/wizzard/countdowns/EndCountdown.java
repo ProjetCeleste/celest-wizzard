@@ -6,7 +6,7 @@ import fr.celestoria.api.enums.Prefix;
 import fr.celestoria.api.gameapi.AbstractCountdown;
 import fr.celestoria.api.gameapi.GamePlayer;
 import fr.celestoria.api.gameapi.Leaderboard;
-import fr.celestoria.api.utils.JsonMessage;
+import fr.celestoria.api.utils.json.JsonMessage;
 import fr.celestoria.api.utils.MathUtils;
 import fr.celestoria.api.utils.Titles;
 import fr.celestoria.wizzard.CelestWizzard;

@@ -54,6 +54,8 @@ public class GameListeners implements Listener {
     Block lastBlock = null;
     int doubleKill = 0;
 
+    XSound.ENTITY_FIREWORK_ROCKET_LAUNCH.play(player);
+
     for (int i = 0; i < SHOOT_MAX_CHECKS; i++) {
       loc.add(dir);
       Block block = loc.getBlock();
